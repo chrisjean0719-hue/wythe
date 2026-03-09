@@ -1,0 +1,27 @@
+[project]
+name = "wythe"
+version = "0.1.0"
+description = "Plan a running-bond brick wall over HTTP"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn>=0.32",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx>=0.27",
+  "pytest>=8",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["wythe*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

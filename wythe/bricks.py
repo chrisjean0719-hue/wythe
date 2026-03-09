@@ -1,0 +1,12 @@
+"""A 190 by 57 mm brick face with a 10 mm joint. Two closers and their joints fill one module."""
+
+BRICK_LENGTH_MM = 190
+BRICK_HEIGHT_MM = 57
+JOINT_MM = 10
+MODULE_MM = BRICK_LENGTH_MM + JOINT_MM
+CLOSER_MM = (BRICK_LENGTH_MM - JOINT_MM) // 2
+
+MIN_MODULES = 1
+MAX_MODULES = 30
+MIN_COURSES = 1
+MAX_COURSES = 24

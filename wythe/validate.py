@@ -1,3 +1,4 @@
+from wythe.bond import BONDS
 from wythe.bricks import MAX_COURSES, MAX_MODULES, MIN_COURSES, MIN_MODULES
 
 
@@ -13,6 +14,11 @@ def validate_wall(wall: object) -> list[str]:
         errors.append(f"modules: modules must be an integer from {MIN_MODULES} to {MAX_MODULES}")
     if not _in_range(wall.get("courses"), MIN_COURSES, MAX_COURSES):
         errors.append(f"courses: courses must be an integer from {MIN_COURSES} to {MAX_COURSES}")
+    bond = wall.get("bond", "running")
+    if bond is None:
+        bond = "running"
+    if bond not in BONDS:
+        errors.append("bond: bond must be running, stack, or flemish")
     return errors
 
 

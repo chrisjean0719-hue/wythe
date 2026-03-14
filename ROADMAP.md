@@ -1,12 +1,8 @@
 # Roadmap
 
-Wythe plans a running-bond brick wall over HTTP and counts its bricks and mortar. This is the first of six updates. About 38 hours of later work stay after those six.
+Wythe plans a running, stack, or Flemish bond wall over HTTP and counts its bricks and mortar. This is the second of six updates. About 38 hours of later work stay after those six.
 
 ## Still in the six updates
-
-### Stack and Flemish (update 2)
-
-Add stack bond and Flemish bond, and accept the bond on the wall.
 
 ### Opening (update 3)
 
@@ -72,4 +68,4 @@ Accept a length in millimetres that is not a whole number of modules, and list t
 
 Show three sample walls and let the page open one of them.
 
-Stack bond and Flemish bond are the next piece. The API plans a running bond, and it does not yet choose another bond.
+An opening is the next piece. The API can choose a bond, and it does not yet leave a hole in the wall.

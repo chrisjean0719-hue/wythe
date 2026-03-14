@@ -27,3 +27,10 @@ def test_bad_fields_are_named_and_a_list_is_rejected():
     assert any(error.startswith("courses:") for error in errors)
     with pytest.raises(PlanError):
         plan_wall({**SAMPLE_WALL, "modules": 31})
+    assert validate_wall({**SAMPLE_WALL, "bond": "english"}) == ["bond: bond must be running, stack, or flemish"]
+    flemish = plan_wall({**SAMPLE_WALL, "bond": "flemish"})
+    assert flemish["bricks"] == 108
+    assert flemish["headers"] == 56
+    assert flemish["closers"] == 0
+    assert flemish["faceLengthMm"] == plan_wall(SAMPLE_WALL)["faceLengthMm"]
+    assert flemish["mortarLengthMm"] == 19630

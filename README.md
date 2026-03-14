@@ -1,6 +1,6 @@
 # Wythe
 
-An HTTP API for a brick wall. It lays 190 by 57 mm bricks with 10 mm joints in running bond and counts the stretchers, closers, and mortar.
+An HTTP API for a brick wall. It lays 190 by 57 mm bricks with 10 mm joints in running bond, stack bond, or Flemish bond and counts the stretchers, headers, closers, and mortar.
 
 It is for someone setting out a garden wall at home. The sample wall is made up. The service does not store names, addresses, or customer orders.
 
@@ -24,7 +24,7 @@ curl http://127.0.0.1:8023/sample
 curl -X POST http://127.0.0.1:8023/walls -H "Content-Type: application/json" -d "{\"name\":\"Sample garden wall\",\"modules\":10,\"courses\":8}"
 ```
 
-A wall is a name, a module count, and a course count. One module is a 190 mm brick plus a 10 mm joint. The face is one joint shorter than the module count, because the joints sit between bricks and not past the ends. Running bond lays stretchers, and every other course starts and ends with a 90 mm closer. Two closers are cut from one brick. Course 1 is the first course in the response, and it is the bottom row. The mortar length is the bed joints between courses plus the vertical joints, in millimetres. The sample garden wall is 10 modules by 8 courses: 1990 by 526 mm, 80 bricks, and 18262 mm of mortar. Stack bond, Flemish bond, and an opening are later work.
+A wall is a name, a bond, a module count, and a course count. Leave the bond out to keep running bond. One module is a 190 mm brick plus a 10 mm joint. The face is one joint shorter than the module count, because the joints sit between bricks and not past the ends. Running bond lays stretchers, and every other course starts and ends with a 90 mm closer. Two closers are cut from one brick. Stack bond repeats that stretcher course with no offset. Flemish bond alternates stretchers and 90 mm headers, and the next course starts with a header so the joints do not line up. Course 1 is the first course in the response, and it is the bottom row. The mortar length is the bed joints between courses plus the vertical joints, in millimetres. The sample garden wall is 10 modules by 8 courses in running bond: 1990 by 526 mm, 80 bricks, and 18262 mm of mortar. The same wall in Flemish bond uses 108 bricks and 19630 mm of mortar. An opening is later work.
 
 ## Layout
 
@@ -36,7 +36,7 @@ tests/          unit tests
 
 ## Next
 
-Five updates remain. About 38 hours of later work stay in [ROADMAP.md](ROADMAP.md) after those six.
+Four updates remain. About 38 hours of later work stay in [ROADMAP.md](ROADMAP.md) after those six.
 
 ## License
 

@@ -1,4 +1,4 @@
-from wythe.bond import face_height_mm, face_length_mm, mortar_length_mm, running_course, tally
+from wythe.bond import BONDS, course_pieces, course_width_mm, face_height_mm, face_length_mm, mortar_length_mm, running_course, tally
 from wythe.bricks import CLOSER_MM
 
 
@@ -21,3 +21,16 @@ def test_two_closers_count_as_one_brick():
     assert counts["closers"] == 8
     assert counts["bricks"] == 80
     assert mortar_length_mm(10, 8) == 18262
+
+
+def test_every_bond_fills_the_same_face_and_flemish_uses_headers():
+    for bond in BONDS:
+        for modules in range(1, 11):
+            for course in (0, 1):
+                assert course_width_mm(course_pieces(modules, course, bond)) == face_length_mm(modules)
+    stacked = course_pieces(10, 1, "stack")
+    assert {piece["kind"] for piece in stacked} == {"stretcher"}
+    assert mortar_length_mm(10, 8, "stack") == 18034
+    assert course_pieces(10, 0, "flemish")[0]["kind"] == "stretcher"
+    assert course_pieces(10, 0, "flemish")[1]["kind"] == "header"
+    assert course_pieces(10, 1, "flemish")[0]["kind"] == "header"

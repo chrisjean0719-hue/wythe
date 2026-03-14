@@ -23,3 +23,13 @@ def test_a_bad_wall_names_the_fields():
     assert "name: Wall needs a name" in errors
     assert any(error.startswith("modules:") for error in errors)
     assert any(error.startswith("courses:") for error in errors)
+    rejected = client.post("/walls", json={"name": "Sample garden wall", "modules": 10, "courses": 8, "bond": "english"})
+    assert rejected.status_code == 400
+    assert "bond: bond must be running, stack, or flemish" in rejected.json()["errors"]
+    flemish = client.post(
+        "/walls",
+        json={"name": "Boundary wall", "modules": 10, "courses": 8, "bond": "flemish"},
+    )
+    assert flemish.status_code == 200
+    assert flemish.json()["bricks"] == 108
+    assert flemish.json()["mortarLengthMm"] == 19630

@@ -1,4 +1,4 @@
-from wythe.bond import face_height_mm, face_length_mm, mortar_length_mm, running_course, tally
+from wythe.bond import course_pieces, face_height_mm, face_length_mm, mortar_length_mm, tally
 from wythe.validate import validate_wall
 
 
@@ -15,11 +15,12 @@ def plan_wall(wall: object) -> dict:
     assert isinstance(wall, dict)
     modules = wall["modules"]
     courses = wall["courses"]
-    courses_of_pieces = [running_course(modules, index) for index in range(courses)]
+    bond = wall.get("bond") or "running"
+    courses_of_pieces = [course_pieces(modules, index, bond) for index in range(courses)]
     counts = tally(courses_of_pieces)
     return {
         "name": wall["name"].strip(),
-        "bond": "running",
+        "bond": bond,
         "modules": modules,
         "courses": courses,
         "faceLengthMm": face_length_mm(modules),
@@ -28,6 +29,6 @@ def plan_wall(wall: object) -> dict:
         "stretchers": counts["stretchers"],
         "headers": counts["headers"],
         "closers": counts["closers"],
-        "mortarLengthMm": mortar_length_mm(modules, courses),
+        "mortarLengthMm": mortar_length_mm(modules, courses, bond),
         "coursesOfPieces": courses_of_pieces,
     }

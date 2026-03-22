@@ -19,6 +19,36 @@ def validate_wall(wall: object) -> list[str]:
         bond = "running"
     if bond not in BONDS:
         errors.append("bond: bond must be running, stack, or flemish")
+    errors.extend(_opening_errors(wall.get("opening"), wall.get("modules"), wall.get("courses")))
+    return errors
+
+
+def _opening_errors(opening: object, modules: object, courses: object) -> list[str]:
+    if opening is None:
+        return []
+    if not isinstance(opening, dict):
+        return ["opening: opening must be an object"]
+    fields = ("module", "width", "course", "height")
+    present = [field for field in fields if opening.get(field) is not None]
+    if not present:
+        return []
+    if len(present) < len(fields):
+        return ["opening: set module, width, course, and height, or leave the opening empty"]
+    errors: list[str] = []
+    for field in fields:
+        value = opening[field]
+        if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+            errors.append(f"opening.{field}: opening.{field} must be a positive integer")
+    if errors:
+        return errors
+    module = opening["module"]
+    width = opening["width"]
+    course = opening["course"]
+    height = opening["height"]
+    if isinstance(modules, int) and not isinstance(modules, bool) and module + width - 1 > modules:
+        errors.append("opening.width: the opening must stay inside the wall length")
+    if isinstance(courses, int) and not isinstance(courses, bool) and course + height - 1 > courses:
+        errors.append("opening.height: the opening must stay inside the wall height")
     return errors
 
 

@@ -1,4 +1,6 @@
-from wythe.bond import course_pieces, face_height_mm, face_length_mm, mortar_length_mm, tally
+from wythe.bond import course_pieces, face_height_mm, face_length_mm, tally
+from wythe.bricks import BRICK_HEIGHT_MM
+from wythe.opening import clip_course, is_cut, opening_span
 from wythe.validate import validate_wall
 
 
@@ -16,19 +18,54 @@ def plan_wall(wall: object) -> dict:
     modules = wall["modules"]
     courses = wall["courses"]
     bond = wall.get("bond") or "running"
-    courses_of_pieces = [course_pieces(modules, index, bond) for index in range(courses)]
+    opening = _complete_opening(wall.get("opening"))
+    span = opening_span(opening) if opening else None
+    courses_of_pieces = []
+    for index in range(courses):
+        solid = course_pieces(modules, index, bond)
+        course_number = index + 1
+        if opening and span and opening["course"] <= course_number < opening["course"] + opening["height"]:
+            courses_of_pieces.append(clip_course(solid, span["left"], span["right"]))
+        else:
+            courses_of_pieces.append(solid)
     counts = tally(courses_of_pieces)
+    face = face_length_mm(modules)
     return {
         "name": wall["name"].strip(),
         "bond": bond,
         "modules": modules,
         "courses": courses,
-        "faceLengthMm": face_length_mm(modules),
+        "faceLengthMm": face,
         "faceHeightMm": face_height_mm(courses),
         "bricks": counts["bricks"],
         "stretchers": counts["stretchers"],
         "headers": counts["headers"],
         "closers": counts["closers"],
-        "mortarLengthMm": mortar_length_mm(modules, courses, bond),
+        "cuts": sum(1 for course in courses_of_pieces for piece in course if is_cut(piece)),
+        "opening": opening,
+        "mortarLengthMm": _mortar_from_rows(courses_of_pieces, face),
         "coursesOfPieces": courses_of_pieces,
     }
+
+
+def _complete_opening(opening: object) -> dict | None:
+    if not isinstance(opening, dict):
+        return None
+    fields = ("module", "width", "course", "height")
+    if any(opening.get(field) is None for field in fields):
+        return None
+    return {field: opening[field] for field in fields}
+
+
+def _mortar_from_rows(rows: list[list[dict]], face: int) -> int:
+    length = 0
+    for index, row in enumerate(rows):
+        for piece_index in range(len(row) - 1):
+            if row[piece_index]["kind"] != "opening" and row[piece_index + 1]["kind"] != "opening":
+                length += BRICK_HEIGHT_MM
+        if index < len(rows) - 1:
+            hole = next((piece for piece in row if piece["kind"] == "opening"), None)
+            next_hole = next((piece for piece in rows[index + 1] if piece["kind"] == "opening"), None)
+            lost = min(hole["widthMm"], next_hole["widthMm"]) if hole and next_hole else 0
+            length += face - lost
+    return length

@@ -1,7 +1,7 @@
 [project]
 name = "wythe"
-version = "0.2.0"
-description = "Plan a brick wall in running, stack, or Flemish bond over HTTP"
+version = "0.3.0"
+description = "Plan a brick wall with a bond and an opening over HTTP"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"

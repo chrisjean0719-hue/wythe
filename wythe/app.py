@@ -5,7 +5,14 @@ from pydantic import BaseModel
 from wythe.sample import SAMPLE_WALL
 from wythe.wall import PlanError, plan_wall
 
-app = FastAPI(title="Wythe", version="0.2.0")
+app = FastAPI(title="Wythe", version="0.3.0")
+
+
+class OpeningRequest(BaseModel):
+    module: int | None = None
+    width: int | None = None
+    course: int | None = None
+    height: int | None = None
 
 
 class WallRequest(BaseModel):
@@ -13,6 +20,7 @@ class WallRequest(BaseModel):
     modules: int
     courses: int
     bond: str | None = None
+    opening: OpeningRequest | None = None
 
 
 @app.get("/health")

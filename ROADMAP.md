@@ -1,12 +1,8 @@
 # Roadmap
 
-Wythe plans a running, stack, or Flemish bond wall over HTTP and counts its bricks and mortar. This is the second of six updates. About 38 hours of later work stay after those six.
+Wythe plans a running, stack, or Flemish bond wall over HTTP, can leave a rectangular opening, and counts its bricks and mortar. This is the third of six updates. About 38 hours of later work stay after those six.
 
 ## Still in the six updates
-
-### Opening (update 3)
-
-Leave a rectangular opening out of the brick count.
 
 ### Corner (update 4)
 
@@ -68,4 +64,4 @@ Accept a length in millimetres that is not a whole number of modules, and list t
 
 Show three sample walls and let the page open one of them.
 
-An opening is the next piece. The API can choose a bond, and it does not yet leave a hole in the wall.
+A corner is the next piece. The API can leave an opening, and it does not yet turn the wall.

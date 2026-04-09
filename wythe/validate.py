@@ -20,6 +20,7 @@ def validate_wall(wall: object) -> list[str]:
     if bond not in BONDS:
         errors.append("bond: bond must be running, stack, or flemish")
     errors.extend(_opening_errors(wall.get("opening"), wall.get("modules"), wall.get("courses")))
+    errors.extend(_corner_errors(wall.get("corner")))
     return errors
 
 
@@ -49,6 +50,25 @@ def _opening_errors(opening: object, modules: object, courses: object) -> list[s
         errors.append("opening.width: the opening must stay inside the wall length")
     if isinstance(courses, int) and not isinstance(courses, bool) and course + height - 1 > courses:
         errors.append("opening.height: the opening must stay inside the wall height")
+    return errors
+
+
+def _corner_errors(corner: object) -> list[str]:
+    if corner is None:
+        return []
+    if not isinstance(corner, dict):
+        return ["corner: corner must be an object"]
+    has_end = corner.get("end") is not None
+    has_modules = corner.get("modules") is not None
+    if not has_end and not has_modules:
+        return []
+    if not has_end or not has_modules:
+        return ["corner: set the end and the modules, or leave the corner empty"]
+    errors: list[str] = []
+    if corner["end"] not in ("left", "right"):
+        errors.append("corner.end: corner end must be left or right")
+    if not _in_range(corner["modules"], MIN_MODULES, MAX_MODULES):
+        errors.append(f"corner.modules: corner modules must be an integer from {MIN_MODULES} to {MAX_MODULES}")
     return errors
 
 

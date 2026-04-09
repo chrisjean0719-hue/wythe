@@ -1,4 +1,5 @@
 from wythe.bond import course_pieces, face_height_mm, face_length_mm, tally
+from wythe.corner import return_courses, return_face_length_mm, return_mortar_length_mm
 from wythe.bricks import BRICK_HEIGHT_MM
 from wythe.opening import clip_course, is_cut, opening_span
 from wythe.validate import validate_wall
@@ -28,8 +29,14 @@ def plan_wall(wall: object) -> dict:
             courses_of_pieces.append(clip_course(solid, span["left"], span["right"]))
         else:
             courses_of_pieces.append(solid)
+    corner = _complete_corner(wall.get("corner"))
+    turned = return_courses(corner["modules"], courses, bond) if corner else []
     counts = tally(courses_of_pieces)
+    extra = tally(turned)
     face = face_length_mm(modules)
+    mortar = _mortar_from_rows(courses_of_pieces, face)
+    if corner:
+        mortar += return_mortar_length_mm(corner["modules"], courses, bond)
     return {
         "name": wall["name"].strip(),
         "bond": bond,
@@ -37,15 +44,24 @@ def plan_wall(wall: object) -> dict:
         "courses": courses,
         "faceLengthMm": face,
         "faceHeightMm": face_height_mm(courses),
-        "bricks": counts["bricks"],
-        "stretchers": counts["stretchers"],
-        "headers": counts["headers"],
-        "closers": counts["closers"],
+        "bricks": counts["bricks"] + extra["bricks"],
+        "stretchers": counts["stretchers"] + extra["stretchers"],
+        "headers": counts["headers"] + extra["headers"],
+        "closers": counts["closers"] + extra["closers"],
         "cuts": sum(1 for course in courses_of_pieces for piece in course if is_cut(piece)),
         "opening": opening,
-        "mortarLengthMm": _mortar_from_rows(courses_of_pieces, face),
+        "corner": corner,
+        "returnFaceLengthMm": return_face_length_mm(corner["modules"]) if corner else 0,
+        "mortarLengthMm": mortar,
         "coursesOfPieces": courses_of_pieces,
+        "returnCourses": turned,
     }
+
+
+def _complete_corner(corner: object) -> dict | None:
+    if not isinstance(corner, dict) or corner.get("end") is None or corner.get("modules") is None:
+        return None
+    return {"end": corner["end"], "modules": corner["modules"]}
 
 
 def _complete_opening(opening: object) -> dict | None:

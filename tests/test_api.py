@@ -52,3 +52,11 @@ def test_a_bad_wall_names_the_fields():
     )
     assert partial.status_code == 400
     assert partial.json()["errors"] == ["opening: set module, width, course, and height, or leave the opening empty"]
+    turned = client.post(
+        "/walls",
+        json={"name": "Sample garden wall", "modules": 10, "courses": 8, "corner": {"end": "right", "modules": 4}},
+    )
+    assert turned.status_code == 200
+    assert turned.json()["bricks"] == 112
+    assert turned.json()["returnFaceLengthMm"] == 790
+    assert turned.json()["mortarLengthMm"] == 25844

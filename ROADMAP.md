@@ -1,12 +1,8 @@
 # Roadmap
 
-Wythe plans a running, stack, or Flemish bond wall over HTTP, can leave a rectangular opening, and counts its bricks and mortar. This is the third of six updates. About 38 hours of later work stay after those six.
+Wythe plans a running, stack, or Flemish bond wall over HTTP, can leave a rectangular opening, can turn one end, and counts its bricks and mortar. This is the fourth of six updates. About 38 hours of later work stay after those six.
 
 ## Still in the six updates
-
-### Corner (update 4)
-
-Turn the wall at one end and add the bricks that return around the corner.
 
 ### Elevation file (update 5)
 
@@ -64,4 +60,4 @@ Accept a length in millimetres that is not a whole number of modules, and list t
 
 Show three sample walls and let the page open one of them.
 
-A corner is the next piece. The API can leave an opening, and it does not yet turn the wall.
+An elevation file is the next piece. The API can turn one end, and it does not yet return an SVG.

@@ -1,12 +1,8 @@
 # Roadmap
 
-Wythe plans a running, stack, or Flemish bond wall over HTTP, can leave a rectangular opening, can turn one end, and counts its bricks and mortar. This is the fourth of six updates. About 38 hours of later work stay after those six.
+Wythe plans a running, stack, or Flemish bond wall over HTTP, can leave a rectangular opening, can turn one end, counts its bricks and mortar, and returns the elevation as an SVG. This is the fifth of six updates. About 38 hours of later work stay after those six.
 
 ## Still in the six updates
-
-### Elevation file (update 5)
-
-Return the elevation as an SVG.
 
 ### Compare (update 6)
 
@@ -60,4 +56,4 @@ Accept a length in millimetres that is not a whole number of modules, and list t
 
 Show three sample walls and let the page open one of them.
 
-An elevation file is the next piece. The API can turn one end, and it does not yet return an SVG.
+Comparing two walls is the next piece. The API can return an elevation, and it does not yet compare two plans.

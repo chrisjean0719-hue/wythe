@@ -1,7 +1,7 @@
 [project]
 name = "wythe"
-version = "0.4.0"
-description = "Plan a brick wall with a bond, an opening, and a corner return over HTTP"
+version = "0.5.0"
+description = "Plan a brick wall and return its elevation as an SVG"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"

@@ -60,3 +60,11 @@ def test_a_bad_wall_names_the_fields():
     assert turned.json()["bricks"] == 112
     assert turned.json()["returnFaceLengthMm"] == 790
     assert turned.json()["mortarLengthMm"] == 25844
+    elevation = client.get("/sample/elevation")
+    assert elevation.status_code == 200
+    assert elevation.headers["content-type"].startswith("image/svg+xml")
+    assert 'filename="sample-garden-wall-elevation.svg"' in elevation.headers["content-disposition"]
+    assert 'viewBox="0 0 1990 542"' in elevation.text
+    bad = client.post("/walls/elevation", json={"name": " ", "modules": 0, "courses": 40})
+    assert bad.status_code == 400
+    assert "name: Wall needs a name" in bad.json()["errors"]

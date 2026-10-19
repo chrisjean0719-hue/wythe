@@ -1,12 +1,6 @@
 # Roadmap
 
-Wythe plans a running, stack, or Flemish bond wall over HTTP, can leave a rectangular opening, can turn one end, counts its bricks and mortar, and returns the elevation as an SVG. This is the fifth of six updates. About 38 hours of later work stay after those six.
-
-## Still in the six updates
-
-### Compare (update 6)
-
-Compare two walls by brick count and mortar length.
+Wythe plans a running, stack, or Flemish bond wall over HTTP, can leave a rectangular opening, can turn one end, counts its bricks and mortar, returns the elevation as an SVG, and compares two walls. The six updates are complete. About 38 hours remain.
 
 ## After the sixth update
 
@@ -56,4 +50,4 @@ Accept a length in millimetres that is not a whole number of modules, and list t
 
 Show three sample walls and let the page open one of them.
 
-Comparing two walls is the next piece. The API can return an elevation, and it does not yet compare two plans.
+A pier is the next piece. The API can compare two walls, and it does not yet add a pier.

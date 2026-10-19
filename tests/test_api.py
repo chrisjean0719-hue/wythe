@@ -68,3 +68,24 @@ def test_a_bad_wall_names_the_fields():
     bad = client.post("/walls/elevation", json={"name": " ", "modules": 0, "courses": 40})
     assert bad.status_code == 400
     assert "name: Wall needs a name" in bad.json()["errors"]
+    compared = client.post(
+        "/walls/compare",
+        json={
+            "left": {"name": "Sample garden wall", "modules": 10, "courses": 8},
+            "right": {"name": "Boundary wall", "modules": 10, "courses": 8, "bond": "flemish"},
+        },
+    )
+    assert compared.status_code == 200
+    assert compared.json()["bricks"] == [80, 108]
+    assert compared.json()["mortarLengthMm"] == [18262, 19630]
+    assert compared.json()["text"].startswith("Sample garden wall vs Boundary wall")
+    rejected = client.post(
+        "/walls/compare",
+        json={
+            "left": {"name": " ", "modules": 10, "courses": 8},
+            "right": {"name": "Boundary wall", "modules": 0, "courses": 8, "bond": "flemish"},
+        },
+    )
+    assert rejected.status_code == 400
+    assert "left.name: Wall needs a name" in rejected.json()["errors"]
+    assert any(error.startswith("right.modules:") for error in rejected.json()["errors"])
